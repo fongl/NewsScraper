@@ -11,8 +11,10 @@ var app = express();
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
-mongoose.connect("mongodb://localhost/news");
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI,{
+  useMongoClient: true});
 
 
 app.get("/scrape", function(req, res) {
